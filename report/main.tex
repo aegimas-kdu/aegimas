@@ -1,0 +1,497 @@
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[margin=2cm]{geometry}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage[numbers]{natbib}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{fancyhdr}
+
+\setstretch{1.15}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\footnotesize 2026 Research and Innovation Showcase | Project Report}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+\hypersetup{colorlinks=true, linkcolor=blue!60!black, citecolor=blue!60!black, urlcolor=blue!50!black}
+
+\lstset{
+    language=Python,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\bfseries,
+    commentstyle=\color{gray},
+    frame=single,
+    breaklines=true,
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+}
+
+\begin{document}
+
+% ===================== COVER PAGE =====================
+\thispagestyle{empty}
+\begin{center}
+
+\vspace*{1cm}
+% Upload kdu-logo.png to Overleaf
+\includegraphics[width=3cm]{kdu-logo.png}
+
+\vspace{0.5cm}
+{\large \textbf{KYUNGDONG UNIVERSITY GLOBAL}}\\[4pt]
+{KDU Global Research Center}\\[2pt]
+{\small 2026 Research and Innovation Showcase -- 9 December 2026}
+
+\vspace{2cm}
+{\LARGE \textbf{PROJECT REPORT}}
+
+\vspace{0.5cm}
+\rule{\textwidth}{0.5pt}
+
+\vspace{0.5cm}
+{\Large \textbf{Trust-Ledgered Resilience of Multi-Agent AI Systems Against Coordinated Byzantine and Tool-Poisoning Attacks}}
+
+\vspace{0.3cm}
+{\large \textit{AegisMAS}}
+
+\end{center}
+
+\vspace{2cm}
+
+\begin{center}
+\begin{tabular}{|l|p{10cm}|}
+\hline
+\textbf{Project category} & $\boxtimes$ Research and Discovery: Evidence, Analysis and New Knowledge \\
+\hline
+\textbf{Department} & Smart Computing \\
+\hline
+\textbf{Course and section} & Seminar on AI Literacy -- Section A \\
+\hline
+\textbf{Course professor} & Prof.\ Song \\
+\hline
+\textbf{Group leader} & ALINGILYA Crispin NJEWA -- \textit{[Student ID]} \\
+\hline
+\textbf{Submission date} & 25 November 2026 \\
+\hline
+\end{tabular}
+\end{center}
+
+\vfill
+\begin{center}
+{\small Kyungdong University Global | Republic of Korea}
+\end{center}
+
+\newpage
+
+% ===================== DECLARATION =====================
+\section*{Authorship and Academic Integrity Declaration}
+\addcontentsline{toc}{section}{Authorship and Academic Integrity Declaration}
+
+By signing below, the Group Leader confirms on behalf of all members that this report is original, properly referenced, ethically conducted, and approved by the course professor.
+
+\begin{itemize}[nosep]
+    \item All sources, quotations, datasets, images, code, and external contributions are acknowledged.
+    \item No data, findings, citations, or references were fabricated or misrepresented.
+\end{itemize}
+
+\subsection*{Responsible AI Disclosure}
+\textit{[To be filled by the team before submission.]}
+
+\subsection*{Group Leader Confirmation}
+\begin{tabular}{|l|p{8cm}|}
+\hline
+\textbf{Name} & ALINGILYA Crispin NJEWA \\
+\hline
+\textbf{Student ID} & \\
+\hline
+\textbf{Signature} & \\
+\hline
+\textbf{Date} & \\
+\hline
+\end{tabular}
+
+\subsection*{Team Members}
+\begin{tabular}{|c|l|l|l|}
+\hline
+\textbf{No.} & \textbf{Name} & \textbf{Student ID} & \textbf{Department} \\
+\hline
+1 & Crispin (Group Leader) & & Smart Computing \\
+\hline
+2 & Bessie & & Smart Computing \\
+\hline
+3 & Ted & & Smart Computing \\
+\hline
+4 & Precieuse & & Smart Computing \\
+\hline
+5 & John & & Smart Computing \\
+\hline
+6 & Marie Rosine & & Smart Computing \\
+\hline
+\end{tabular}
+
+\newpage
+
+% ===================== ABSTRACT =====================
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+\textit{[150--250 words. State the problem, method, findings, significance.]}
+
+\textbf{Keywords:} multi-agent systems, Byzantine fault tolerance, tool poisoning, trust ledger, adversarial AI, supply-chain simulation
+
+\section*{Acknowledgements}
+\addcontentsline{toc}{section}{Acknowledgements}
+\textit{[Optional.]}
+
+\newpage
+\tableofcontents
+\newpage
+
+% ===================== 1. PROJECT OVERVIEW =====================
+\section{Project Overview}
+
+\subsection{Background and Context}
+\textit{[Introduce multi-agent AI systems, the trust problem, and why coordinated attacks matter.]}
+
+\subsection{Problem Statement and Research Question}
+At a fixed verification budget, does a trust-ledgered defense make a multi-agent system more resilient to coordinated Byzantine-style agent and tool-poisoning attacks---shown by lower attack success rate and bounded recovery cost over multi-mission episodes---compared with stateless auditing?
+
+\subsection{Aim and Objectives}
+\textbf{Aim:} To investigate whether a persistent trust ledger improves multi-agent resilience against coordinated attacks compared with stateless defenses at the same verification budget.
+
+\begin{itemize}[nosep]
+    \item \textbf{O1:} Design four attack conditions (C0--C3) spanning single-agent, single-tool, and coordinated attacks.
+    \item \textbf{O2:} Design five defense conditions (D0--D3, D3-reset) including a trust-ledgered audit.
+    \item \textbf{O3:} Run a full-factorial experiment (80 cells), measuring ASR, TSR, and FPR with 95\% confidence intervals.
+    \item \textbf{O4:} Analyze whether D3 achieves significantly lower ASR than D2 at the same budget.
+\end{itemize}
+
+\subsection{Scope and Boundaries}
+\textit{[Simulated domain only, scripted agents, deterministic attacks, Python simulation.]}
+
+\subsection{Significance and Intended Impact}
+\textit{[Who benefits and why this matters for AI safety.]}
+
+\newpage
+
+% ===================== 2. EVIDENCE AND PRIOR WORK =====================
+\section{Evidence and Prior Work}
+
+\subsection{Review Approach}
+\textit{[How literature was found: Google Scholar, IEEE Xplore, ArXiv.]}
+
+\subsection{Relevant Knowledge and Existing Solutions}
+\textit{[Themes: Byzantine faults, tool poisoning, trust in multi-agent systems.]}
+
+\subsection{Gap or Opportunity}
+\textit{[No prior work combines both attack vectors with a trust-ledger defense.]}
+
+\subsection{Conceptual or Design Basis}
+\textit{[Byzantine Generals Problem + trust-reputation models + wrapper attack pattern.]}
+
+\newpage
+
+% ===================== 3. METHODOLOGY =====================
+\section{Methodology}
+
+\subsection{Research Design}
+We use a controlled simulation experiment with a full-factorial design: 4 attack conditions $\times$ 5 defense conditions $\times$ 4 budget levels = 80 cells, each run for about 100 episodes of 20 missions (~160,000 total runs).
+
+\subsection{Simulation Environment}
+\textit{[Ted \& Bessie -- describe the supply-chain domain, mission generator, agents, coordinator, plan checker, seeds.]}
+
+% ==================================================================
+%  3.3  ATTACK DESIGN
+% ==================================================================
+\subsection{Attack Design}
+\label{sec:attacks}
+
+To evaluate the resilience of the multi-agent system, four attack conditions were designed and implemented, ranging from a no-attack baseline to a coordinated multi-vector attack. This subsection describes the simulator interface used by the attacks, the threat model, each of the four conditions in detail, and the results of preliminary validation.
+
+\subsubsection{Simulator Interface for Attacks}
+
+The attacks depend on the simulation pipeline described in Section~3.2. Each mission generates a set of agents that report their observations as \textit{claims} to a central coordinator. Three types of agents participate:
+
+\begin{itemize}[nosep]
+    \item \textbf{Warehouse agents} report stock levels (medical kits and tents).
+    \item \textbf{Transport agents} report truck capacity and cost per trip.
+    \item \textbf{Route agents} report travel distance and time to each warehouse.
+\end{itemize}
+
+The coordinator aggregates these claims and selects the cheapest warehouse-truck combination that meets the delivery deadline. A plan checker then validates the resulting plan against ground truth.
+
+Each claim follows a standardized dictionary format:
+
+\begin{lstlisting}
+{
+    "source_id":  "Agent_Warehouse_Alpha",
+    "claim_type": "warehouse_stock",
+    "field":      "medical_kits",
+    "value":      500,      # what the coordinator receives
+    "truth":      500,      # the actual ground truth
+}
+\end{lstlisting}
+
+Under normal conditions, \texttt{value} equals \texttt{truth}. The attack functions modify \texttt{value} while preserving \texttt{truth}, allowing the defense module and plan checker to detect discrepancies.
+
+All attacks use a \textbf{wrapper pattern}: they intercept claims after agents report but before the coordinator receives them. The agent code is never modified. Each attack is implemented as a pure function with the signature:
+
+\begin{lstlisting}
+def attack_fn(mission, claims) -> modified_claims
+\end{lstlisting}
+
+This design ensures separation between the simulation logic and the attack logic, enabling each attack condition to be tested independently and composed when needed.
+
+\subsubsection{Threat Model}
+
+The adversary operates under the following assumptions:
+
+\begin{enumerate}[nosep]
+    \item \textbf{Claim-level access.} The adversary can intercept and modify claims between agents and the coordinator, but cannot alter the agent code or the plan checker.
+    \item \textbf{Ground-truth knowledge.} The adversary has access to the true mission parameters and can craft targeted lies based on actual warehouse stock, truck capacity, and route data.
+    \item \textbf{Plan failure objective.} The adversary aims to cause the coordinator to produce a plan that passes its own internal checks but fails when validated against reality.
+    \item \textbf{Non-adaptive strategy.} The adversary does not observe or adapt to the defense mechanism. This is a standard first-pass assumption in adversarial evaluation~\cite{carlini2019evaluating}; adaptive attacks are left for future work.
+\end{enumerate}
+
+\subsubsection{Attack Conditions}
+
+The four conditions are organized as a $2 \times 2$ factorial design over two attack vectors: \textit{agent compromise} (a Byzantine agent emitting false claims) and \textit{tool poisoning} (a tool returning manipulated observations to an honest agent).
+
+\begin{table}[H]
+\centering
+\caption{Attack conditions as a $2 \times 2$ factorial design.}
+\label{tab:attack-grid}
+\begin{tabular}{lll}
+\toprule
+& \textbf{Tool honest} & \textbf{Tool poisoned} \\
+\midrule
+\textbf{Agent honest}    & C0 (no attack) & C2 (poisoned tool) \\
+\textbf{Agent Byzantine} & C1 (Byzantine agent) & C3 (coordinated) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{C0 --- No Attack (Control Baseline).}
+All claims pass through unmodified. This condition establishes the baseline task success rate (TSR) when no adversary is present and quantifies the false-positive rate (FPR) of each defense, since any claims flagged under C0 are false alarms.
+
+\paragraph{C1 --- Byzantine Agent.}
+A single warehouse agent is compromised and reports inflated stock levels. The attack targets the warehouse with the largest stock deficit relative to the mission target --- the one least likely to be selected honestly. The reported \texttt{medical\_kits} is set to $\text{target} + 50$ and \texttt{tents} to $\text{target} + 30$. All other claims remain unchanged.
+
+\textit{Target selection rationale:} Worst-case targeting ensures the attack is maximally effective. A randomly chosen warehouse might already have sufficient stock, rendering the manipulation harmless. By targeting the weakest warehouse, the attack provides an upper bound on adversary effectiveness, which is the appropriate standard for security evaluation~\cite{carlini2019evaluating}.
+
+\textit{Mechanism:} The coordinator sees the compromised warehouse as having abundant stock. If its route and cost are competitive, the coordinator selects it over a legitimately stocked warehouse. The plan checker then detects the insufficient real stock and rejects the plan. This models the classic Byzantine fault~\cite{lamport1982byzantine}, where one participant sends false information to mislead group consensus.
+
+\paragraph{C2 --- Poisoned Tool.}
+No agent is dishonest. Instead, the route information tool returns manipulated data. The route agent reports honestly what the tool provided, becoming an unwitting carrier of false information.
+
+Unlike C1, which \textit{promotes} a bad warehouse, C2 \textit{blocks} the best one. The attack identifies the warehouse with the largest stock surplus (the most likely coordinator choice) and inflates its reported travel time to $2.5 \times$ the mission deadline, with reported distance scaled proportionally. The coordinator interprets this warehouse as unreachable within the deadline and excludes it. If no remaining warehouse has sufficient stock, the coordinator either selects an inadequate alternative or fails to produce a plan entirely.
+
+\textit{Rationale:} This denial-of-service strategy proved more effective than inflating a bad option. The mission generator guarantees at least one feasible path, so most missions depend on a single well-stocked warehouse. Removing that option from consideration forces the coordinator into failure.
+
+This condition reflects concerns about tool poisoning and indirect prompt injection in agent-based AI systems~\cite{greshake2023youve}. Although the agents in this simulation are scripted rather than LLM-based, the attack pattern is identical: corrupted tool output propagates through an honest agent.
+
+\paragraph{C3 --- Coordinated Attack.}
+C3 combines C1 and C2 in a complementary ``push-pull'' strategy. C1 inflates the stock of the weakest warehouse (pull --- lure the coordinator toward a bad option), while C2 blocks the route to the best warehouse (push --- remove the good option). The two vectors target different warehouses by design:
+
+\begin{itemize}[nosep]
+    \item C1 makes the worst warehouse appear capable (stock inflation).
+    \item C2 makes the best warehouse appear unreachable (route time inflation).
+\end{itemize}
+
+The coordinator is simultaneously denied its best option and presented with a fabricated alternative. This two-pronged deception is harder to defend against than either vector alone, because detecting only one of the two manipulations may not prevent plan failure.
+
+\subsubsection{Implementation Details}
+
+The C1 and C2 attack functions each iterate over the claim list and modify only the claims matching their target warehouse. C3 is composed by applying C1 first, then C2 on the result:
+
+\begin{lstlisting}
+def coordinated_attack(mission, claims):
+    claims = byzantine_agent(mission, claims)   # C1: inflate weak warehouse
+    claims = poisoned_tool(mission, claims)      # C2: block best warehouse
+    return claims
+\end{lstlisting}
+
+This composition approach avoids code duplication and ensures that each individual vector can be tested and maintained independently.
+
+\subsubsection{Worked Examples}
+
+To illustrate each attack condition concretely, the following tables show the effect on claims for a representative mission.
+
+\paragraph{Example mission (seed 1000):} Deliver 251 medical kits and 100 tents within 25.4 hours, budget \$13{,}700. Three warehouses are available.
+
+\begin{table}[H]
+\centering
+\caption{Ground truth for the example mission (seed 1000).}
+\label{tab:ground-truth}
+\begin{tabular}{lrrrl}
+\toprule
+\textbf{Warehouse} & \textbf{Kits} & \textbf{Tents} & \textbf{Route (h)} & \textbf{Status} \\
+\midrule
+Alpha   & 293 & 239 & 9.8 & Sufficient stock, reachable \\
+Bravo   & 169 & 273 & 1.4 & Insufficient kits \\
+Charlie & 447 &  66 & 6.4 & Insufficient tents \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Under C0, the coordinator selects Alpha (the only warehouse meeting both targets) and the plan succeeds.
+
+\begin{table}[H]
+\centering
+\caption{Claims as seen by the coordinator under each attack condition (seed 1000). Bold values indicate manipulated claims.}
+\label{tab:attack-examples}
+\begin{tabular}{llrrrr}
+\toprule
+\textbf{Source} & \textbf{Field} & \textbf{C0} & \textbf{C1} & \textbf{C2} & \textbf{C3} \\
+\midrule
+Warehouse Alpha   & medical\_kits & 293 & 293 & 293 & 293 \\
+Warehouse Alpha   & tents         & 239 & 239 & 239 & 239 \\
+Warehouse Bravo   & medical\_kits & 169 & \textbf{301} & 169 & \textbf{301} \\
+Warehouse Bravo   & tents         & 273 & \textbf{130} & 273 & \textbf{130} \\
+Warehouse Charlie & medical\_kits & 447 & 447 & 447 & 447 \\
+Warehouse Charlie & tents         &  66 &  66 &  66 &  66 \\
+Route Alpha       & time\_hours   & 9.8 & 9.8 & \textbf{63.5} & \textbf{63.5} \\
+Route Alpha       & distance\_km  & 349 & 349 & \textbf{1047} & \textbf{1047} \\
+Route Bravo       & time\_hours   & 1.4 & 1.4 & 1.4 & 1.4 \\
+Route Charlie     & time\_hours   & 6.4 & 6.4 & 6.4 & 6.4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Outcome under each attack condition for the example mission (seed 1000).}
+\label{tab:attack-outcomes}
+\begin{tabular}{llll}
+\toprule
+\textbf{Condition} & \textbf{Coordinator selects} & \textbf{Plan result} & \textbf{Failure reason} \\
+\midrule
+C0 & Alpha & PASS & --- \\
+C1 & Alpha & PASS & Attack target (Bravo) not selected \\
+C2 & No valid plan & FAIL & Alpha blocked; others lack stock \\
+C3 & Bravo & FAIL & Bravo has only 169 kits (need 251) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This example illustrates several important dynamics. C1 fails to mislead the coordinator because the targeted warehouse (Bravo) is not competitive on cost even with inflated stock. C2 succeeds by removing the only viable option (Alpha). C3 succeeds through the combined effect: Alpha is blocked and Bravo appears viable, leading the coordinator to select a warehouse that cannot fulfill the order. Notably, the two attack vectors fail and succeed in different situations, confirming the value of a factorial design.
+
+\subsubsection{Preliminary Validation}
+
+Before integration with the defense module, the attacks were validated on 50 development seeds (seeds 1000--1049) with no defense active (D0). Table~\ref{tab:attack-asr} reports the observed attack success rates.
+
+\begin{table}[H]
+\centering
+\caption{Attack success rate (ASR) over 50 development seeds, no defense (D0).}
+\label{tab:attack-asr}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Condition} & \textbf{Plans passed} & \textbf{Plans failed} & \textbf{ASR} \\
+\midrule
+C0 (no attack)      & 50 &  0 &  0\% \\
+C1 (Byzantine agent) & 33 & 17 & 34\% \\
+C2 (poisoned tool)   & 19 & 31 & 62\% \\
+C3 (coordinated)     & 17 & 33 & 66\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+These results confirm three expected properties:
+\begin{enumerate}[nosep]
+    \item C0 produces zero failures, validating the simulator's feasibility guarantee.
+    \item The severity ordering C3 $>$ C2 $>$ C1 $>$ C0 holds, with each escalation increasing ASR.
+    \item C2 (62\%) is substantially more effective than C1 (34\%), indicating that blocking a viable option is more damaging than promoting an unviable one in this domain. C3 adds a modest further increase (66\%), suggesting the two vectors are partially redundant when C2 already removes the primary option.
+\end{enumerate}
+
+These are baseline figures without any defense. The full experiment (Section~4) measures how each defense condition reduces these rates across different audit budgets.
+
+% ==================================================================
+%  End of attack design section
+% ==================================================================
+
+\subsection{Defense Conditions}
+\textit{[Precieuse -- D0 through D3-reset, quarantine threshold, recovery logic.]}
+
+\subsection{Trust Ledger}
+\textit{[Marie Rosine -- SQLite schema, trust score updates, how D3 uses it.]}
+
+\subsection{Experiment Matrix and Variables}
+\textit{[John -- 80 cells, episodes, seeds, budget levels.]}
+
+\subsection{Metrics and Analysis Method}
+\textit{[John -- ASR, TSR, FPR definitions, statistical tests.]}
+
+\subsection{Team Roles and Project Management}
+\textit{[Bessie -- role table, timeline, deviations.]}
+
+\newpage
+
+% ===================== 4. RESULTS =====================
+\section{Results or Proposed Solution}
+
+\subsection{Main Output}
+\textit{[Present findings after experiments.]}
+
+\subsection{Evidence and Visuals}
+\textit{[Figures: ASR heatmap, budget curves, trust evolution, FPR comparison.]}
+
+\subsection{Validation or Testing}
+\textit{[Reproducibility, sanity checks, confidence intervals.]}
+
+\newpage
+
+% ===================== 5. DISCUSSION =====================
+\section{Discussion and Evaluation}
+
+\subsection{Interpretation}
+\textit{[What do the results mean? Does D3 beat D2?]}
+
+\subsection{Originality and Added Value}
+\textit{[What is new about combining both attack vectors with a ledger defense.]}
+
+\subsection{Feasibility and Impact}
+\textit{[Runs on a laptop. Could apply to real deployments.]}
+
+\subsection{Limitations and Risks}
+\textit{[Simulated only, scripted agents, non-adaptive attacker, fixed parameters, short timeline.]}
+
+\newpage
+
+% ===================== 6. CONCLUSION =====================
+\section{Conclusion and Next Steps}
+
+\subsection{Conclusion}
+\textit{[Answer the research question directly.]}
+
+\subsection{Recommendations}
+\textit{[Practical advice for multi-agent system designers.]}
+
+\subsection{Next Steps}
+\label{subsec:next-steps}
+\textit{[Adaptive attackers, LLM agents, larger simulations, real-world testing.]}
+
+\newpage
+
+% ===================== REFERENCES =====================
+\bibliographystyle{ieeetr}
+\bibliography{references}
+
+\newpage
+
+% ===================== APPENDICES =====================
+\appendix
+\section{Technical Details}
+\textit{[experiment.json, claim format, ledger schema, full attack code.]}
+
+\section{Additional Results}
+\textit{[Full results table, per-seed breakdown.]}
+
+\end{document}

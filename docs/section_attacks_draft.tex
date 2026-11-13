@@ -1,0 +1,245 @@
+% =============================================================================
+% AegisMAS Report — Section: Attack Design (First Draft)
+% Author: Crispin (Group Leader + Attack Dev)
+% For: Overleaf (IEEE IEEEtran format)
+% =============================================================================
+% Paste this into your Overleaf document in the appropriate section.
+% Adjust the section number to match your report outline.
+% =============================================================================
+
+\section{Attack Design}
+\label{sec:attacks}
+
+This section describes the threat model and the four attack conditions
+used to evaluate the resilience of the multi-agent system.
+
+% -----------------------------------------------------------------------------
+\subsection{Threat Model}
+\label{subsec:threat-model}
+
+We consider a multi-agent supply-chain logistics system in which
+a set of specialised agents (warehouse, transport, and route agents)
+report observations to a central coordinator.
+The coordinator aggregates these \emph{claims} and builds a delivery plan.
+A plan checker then validates the plan against ground truth
+(i.e., whether the plan would actually succeed if executed).
+
+Our threat model makes the following assumptions:
+
+\begin{enumerate}
+    \item \textbf{Claim-level manipulation.}
+        The adversary can modify the claims that agents produce
+        \emph{after} the agent reports but \emph{before} the coordinator
+        receives them.  This is the ``wrapper'' pattern: the agent code
+        itself is never altered, so the attack is external to the agent's
+        logic.
+
+    \item \textbf{Knowledge of ground truth.}
+        The adversary has access to the true mission parameters
+        (warehouse stock, truck capacity, route times) and can craft
+        lies that are plausible yet harmful---e.g., inflating the stock
+        of a warehouse that is actually empty.
+
+    \item \textbf{Goal of the adversary.}
+        The adversary's goal is to cause the coordinator to adopt
+        a plan that \emph{appears} valid based on the (corrupted) claims
+        but \emph{fails} when checked against reality.
+        A successful attack produces a plan that the plan checker
+        rejects.
+
+    \item \textbf{No defence awareness (for now).}
+        In the base attack conditions, the adversary does not adapt
+        to the defence.  This is a standard first-pass assumption;
+        adaptive attacks are noted as future work (Section~\ref{sec:future}).
+\end{enumerate}
+
+% -----------------------------------------------------------------------------
+\subsection{Attack Conditions}
+\label{subsec:attack-conditions}
+
+We define four conditions, labelled C0--C3, that span a spectrum from
+no interference to coordinated multi-vector attacks.
+Table~\ref{tab:attack-summary} summarises them.
+
+\begin{table}[htbp]
+\centering
+\caption{Summary of attack conditions.}
+\label{tab:attack-summary}
+\begin{tabular}{c l l}
+\hline
+\textbf{ID} & \textbf{Name} & \textbf{What is corrupted} \\
+\hline
+C0 & No attack (control)     & Nothing \\
+C1 & Byzantine agent         & One agent's claims \\
+C2 & Poisoned tool           & One tool's observations \\
+C3 & Coordinated             & Agent + tool reinforce same lie \\
+\hline
+\end{tabular}
+\end{table}
+
+% --- C0 ---
+\subsubsection{C0 --- No Attack (Control Baseline)}
+\label{subsubsec:c0}
+
+Under C0 all agents report truthfully and no claims are modified.
+This condition serves two purposes:
+(a)~it measures the \emph{baseline task success rate}
+    (TSR) of the system when no adversary is present, and
+(b)~it quantifies the \emph{false-positive rate} (FPR) of each defence---
+    any claims flagged as suspicious under C0 are false alarms.
+
+\subsubsection{C1 --- Byzantine Agent}
+\label{subsubsec:c1}
+
+In C1 a single agent is selected as the \emph{Byzantine} agent.
+Specifically, one warehouse agent is compromised:
+it reports inflated stock levels so that the coordinator
+believes that warehouse can fulfil the order when, in reality,
+it cannot.
+
+The attack proceeds as follows:
+\begin{enumerate}
+    \item Select the \emph{weakest} warehouse---the one whose true stock
+          is furthest below the mission's target requirements.
+    \item Replace its \texttt{medical\_kits} and \texttt{tents} claims
+          with values that exceed the target by a comfortable margin
+          (e.g., target $+ 50$ kits, target $+ 30$ tents).
+    \item Leave all other claims (transport, route, other warehouses)
+          unchanged.
+\end{enumerate}
+
+The coordinator, seeing apparently sufficient stock at the lying
+warehouse, may choose it for the plan.  When the plan checker
+validates against the true (insufficient) stock, the plan fails.
+
+This attack models the classic Byzantine fault scenario~\cite{lamport1982byzantine}
+in which a single participant sends incorrect information
+to mislead the group's decision.
+
+\subsubsection{C2 --- Poisoned Tool}
+\label{subsubsec:c2}
+
+In C2 no agent is dishonest.  Instead, a \emph{tool}---the route
+information source---is poisoned.  The route agent queries the tool
+honestly but receives manipulated data, which it then relays
+in good faith to the coordinator.
+
+The attack modifies route claims as follows:
+\begin{enumerate}
+    \item Select the route to the warehouse with the \emph{lowest} true
+          stock (the worst option for the coordinator to choose).
+    \item Reduce the reported \texttt{time\_hours} so the route appears
+          fast enough to meet the deadline, even if the real travel
+          time would exceed it.
+    \item Optionally reduce \texttt{distance\_km} for consistency
+          (a short route should also be fast).
+\end{enumerate}
+
+The coordinator now believes that a warehouse which is either
+understocked or too far away is in fact reachable in time, and may
+route the delivery through it.  The honest agent is an unwitting
+accomplice---it reported exactly what its (poisoned) tool told it.
+
+This condition reflects the growing concern around
+tool-poisoning and indirect prompt injection
+in LLM-based agent systems~\cite{greshake2023youve},
+adapted here to a non-LLM scripted setting.
+
+\subsubsection{C3 --- Coordinated Attack (Agent + Tool)}
+\label{subsubsec:c3}
+
+C3 combines C1 and C2: a Byzantine agent \emph{and} a poisoned tool
+reinforce the same false narrative.  Both vectors target the same
+warehouse:
+
+\begin{enumerate}
+    \item The warehouse agent lies about stock levels (as in C1),
+          making the target warehouse appear well-stocked.
+    \item The route tool lies about travel time (as in C2),
+          making the route to that warehouse appear fast.
+\end{enumerate}
+
+Because both the stock report and the route report agree, the
+coordinator receives a \emph{consistent} but entirely false picture.
+This makes the lie harder to detect:
+a defence that cross-checks stock against route information
+would find no internal contradiction.
+
+C3 tests whether defences that perform well against single-vector
+attacks (C1 or C2 alone) degrade when confronted with coordinated
+deception.
+
+% -----------------------------------------------------------------------------
+\subsection{Attack Implementation}
+\label{subsec:attack-impl}
+
+All attacks are implemented as pure functions with the signature:
+
+\begin{verbatim}
+attack_fn(mission, claims) -> modified_claims
+\end{verbatim}
+
+\noindent
+where \texttt{mission} provides ground truth (so the adversary can
+craft targeted lies) and \texttt{claims} is the list of agent reports.
+The function returns a new list of claims with selected entries
+modified.  Unmodified claims are passed through unchanged.
+
+This wrapper design has three advantages:
+\begin{itemize}
+    \item \textbf{Separation of concerns:}
+        agent code never contains attack logic; attacks are external
+        interceptors.
+    \item \textbf{Composability:}
+        C3 is built by applying C1's manipulation followed by C2's,
+        rather than requiring a separate monolithic function.
+    \item \textbf{Reproducibility:}
+        because the attack function is deterministic given the mission
+        and claims, the same seed always produces the same corrupted
+        scenario.
+\end{itemize}
+
+% -----------------------------------------------------------------------------
+\subsection{Attack Targets and Selection Strategy}
+\label{subsec:target-selection}
+
+A key design decision is \emph{which} agent or tool to compromise.
+Random selection would add noise to the results: a randomly chosen
+warehouse that happens to already have sufficient stock cannot
+cause a plan failure by inflating its numbers further.
+
+We therefore use a \textbf{worst-case targeting} strategy:
+the attack always selects the target that maximises the chance of
+misleading the coordinator.  For C1, this means the warehouse with
+the lowest true stock; for C2, the route with the longest true
+travel time.  This gives an upper bound on attack effectiveness
+and ensures the experiment measures defence capability against
+a competent (not random) adversary.
+
+% -----------------------------------------------------------------------------
+\subsection{Summary}
+
+The four conditions form a $2 \times 2$ design over two attack
+vectors (agent compromise and tool poisoning), as shown in
+Table~\ref{tab:attack-2x2}.
+
+\begin{table}[htbp]
+\centering
+\caption{Attack conditions as a $2 \times 2$ design.}
+\label{tab:attack-2x2}
+\begin{tabular}{l c c}
+\hline
+ & \textbf{Tool honest} & \textbf{Tool poisoned} \\
+\hline
+\textbf{Agent honest}      & C0 (control) & C2 \\
+\textbf{Agent Byzantine}   & C1           & C3 \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent
+This factorial structure allows the experiment to measure the
+\emph{individual} effect of each vector (C1 vs.\ C0, C2 vs.\ C0)
+as well as their \emph{interaction} (C3 vs.\ the sum of C1 and C2
+effects), which directly addresses the ``coordinated'' aspect of
+the research question.
