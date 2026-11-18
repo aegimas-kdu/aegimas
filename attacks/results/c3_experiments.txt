@@ -1,0 +1,189 @@
+================================================================================
+C3 EXPERIMENT RESULTS — Coordinated Byzantine + Tool-Poisoning Attack
+Request: 50 x Malaria Treatment -> Muyinga Health Centre
+Seeds: 0-59 (60 runs per config)
+================================================================================
+
+--------------------------------------------------------------------------------
+CONFIG: C3-1: Same target (W1)
+  L_Agent_1 lies x0.3 on W1 + gis_distance_matrix poisoned x0.5 on W1
+--------------------------------------------------------------------------------
+
+  Defense: No defense
+  Success rate (attack fools the plan): 68.3%
+  Decision corruption rate:             6.9%
+  Avg extra real cost when fooled:      +169
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W1', 'Van')
+  Runs fooled: 41/60
+
+  Defense: Majority vote
+  Success rate (attack fools the plan): 0.0%
+  Decision corruption rate:             0.0%
+  Avg extra real cost when fooled:      n/a (never fooled or no cost diff)
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W2', 'Van')
+  Runs fooled: 0/60
+
+--------------------------------------------------------------------------------
+CONFIG: C3-2: Split targets (agent W1, tool W3)
+  L_Agent_1 lies x0.3 on W1 + gis_distance_matrix poisoned x0.5 on W3
+--------------------------------------------------------------------------------
+
+  Defense: No defense
+  Success rate (attack fools the plan): 83.3%
+  Decision corruption rate:             14.3%
+  Avg extra real cost when fooled:      +140
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W1', 'Van')
+  Runs fooled: 50/60
+
+  Defense: Majority vote
+  Success rate (attack fools the plan): 0.0%
+  Decision corruption rate:             0.0%
+  Avg extra real cost when fooled:      n/a (never fooled or no cost diff)
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W2', 'Van')
+  Runs fooled: 0/60
+
+--------------------------------------------------------------------------------
+CONFIG: C3-3: Aggressive (x0.1 liar, x3.0 poison)
+  L_Agent_1 lies x0.1 on W1 + gis_distance_matrix poisoned x3.0 on W1
+--------------------------------------------------------------------------------
+
+  Defense: No defense
+  Success rate (attack fools the plan): 68.3%
+  Decision corruption rate:             6.9%
+  Avg extra real cost when fooled:      +169
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W1', 'Van')
+  Runs fooled: 41/60
+
+  Defense: Majority vote
+  Success rate (attack fools the plan): 0.0%
+  Decision corruption rate:             0.0%
+  Avg extra real cost when fooled:      n/a (never fooled or no cost diff)
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W2', 'Van')
+  Runs fooled: 0/60
+
+--------------------------------------------------------------------------------
+CONFIG: C3-4: Transport domain attack
+  T_Agent_1 lies x0.3 + fleet_specs_catalog poisoned x0.5 on Van
+--------------------------------------------------------------------------------
+
+  Defense: No defense
+  Success rate (attack fools the plan): 33.3%
+  Decision corruption rate:             16.8%
+  Avg extra real cost when fooled:      +70
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W3', 'Van')
+  Runs fooled: 20/60
+
+  Defense: Majority vote
+  Success rate (attack fools the plan): 0.0%
+  Decision corruption rate:             0.0%
+  Avg extra real cost when fooled:      n/a (never fooled or no cost diff)
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W2', 'Van')
+  Runs fooled: 0/60
+
+--------------------------------------------------------------------------------
+CONFIG: C3-5: Global poison + targeted liar
+  L_Agent_2 lies x0.5 on W2 + fuel_and_toll_rates poisoned x2.0 everywhere
+--------------------------------------------------------------------------------
+
+  Defense: No defense
+  Success rate (attack fools the plan): 0.0%
+  Decision corruption rate:             14.8%
+  Avg extra real cost when fooled:      n/a (never fooled or no cost diff)
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W2', 'Van')
+  Runs fooled: 0/60
+
+  Defense: Majority vote
+  Success rate (attack fools the plan): 0.0%
+  Decision corruption rate:             0.0%
+  Avg extra real cost when fooled:      n/a (never fooled or no cost diff)
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W2', 'Van')
+  Runs fooled: 0/60
+
+--------------------------------------------------------------------------------
+CONFIG: C3-6: Warehouse domain attack
+  W_Agent_1 lies x0.3 + warehouse_inventory_db poisoned x0.5 on W1
+--------------------------------------------------------------------------------
+
+  Defense: No defense
+  Success rate (attack fools the plan): 0.0%
+  Decision corruption rate:             0.8%
+  Avg extra real cost when fooled:      n/a (never fooled or no cost diff)
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W2', 'Van')
+  Runs fooled: 0/60
+
+  Defense: Majority vote
+  Success rate (attack fools the plan): 0.0%
+  Decision corruption rate:             0.0%
+  Avg extra real cost when fooled:      n/a (never fooled or no cost diff)
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W2', 'Van')
+  Runs fooled: 0/60
+
+================================================================================
+BASELINES FOR COMPARISON (C0, C1-only, C2-only)
+================================================================================
+
+--- C1-only: gis x0.5 on W1 ---
+
+  Defense: No defense
+  Success rate (attack fools the plan): 55.0%
+  Decision corruption rate:             6.9%
+  Avg extra real cost when fooled:      +130
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W1', 'Van')
+  Runs fooled: 33/60
+
+  Defense: Majority vote
+  Success rate (attack fools the plan): 0.0%
+  Decision corruption rate:             0.0%
+  Avg extra real cost when fooled:      n/a (never fooled or no cost diff)
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W2', 'Van')
+  Runs fooled: 0/60
+
+--- C2-only: L_Agent_1 x0.3 on W1 ---
+
+  Defense: No defense
+  Success rate (attack fools the plan): 68.3%
+  Decision corruption rate:             6.9%
+  Avg extra real cost when fooled:      +169
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W1', 'Van')
+  Runs fooled: 41/60
+
+  Defense: Majority vote
+  Success rate (attack fools the plan): 0.0%
+  Decision corruption rate:             0.0%
+  Avg extra real cost when fooled:      n/a (never fooled or no cost diff)
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W2', 'Van')
+  Runs fooled: 0/60
+
+--- C0: no attack ---
+
+  Defense: No defense
+  Success rate (attack fools the plan): 0.0%
+  Decision corruption rate:             0.0%
+  Avg extra real cost when fooled:      n/a (never fooled or no cost diff)
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W2', 'Van')
+  Runs fooled: 0/60
+
+  Defense: Majority vote
+  Success rate (attack fools the plan): 0.0%
+  Decision corruption rate:             0.0%
+  Avg extra real cost when fooled:      n/a (never fooled or no cost diff)
+  Clean plan:  ('W2', 'Van')
+  Typical attacked plan: ('W2', 'Van')
+  Runs fooled: 0/60
