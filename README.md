@@ -101,16 +101,6 @@ print(result['transportation']['transportation_cost'])
 
 ---
 
-## Team Roles
-
-| Role | Folder | What they do |
-|---|---|---|
-| Simulator Dev | `simulator/` | The base simulator: agents, tools, coordinator, world data |
-| Attack Dev | `attacks/` | C0, C1, C2, C3 attacks, demo app, tests |
-| Defense Dev | `defense/` | D4-Base, D4+ trust-ledger defenses |
-| Experimenter | `experimentations/` | Run experiments, analyze results |
-| Trust Ledger Dev | `defense/` | Trust scoring, ledger, quarantine logic |
-| Reporter | `docs/` | Paper text, figures, final report |
 
 See `TEAM_WORKFLOW.md` for how to clone, commit, and push.
 
