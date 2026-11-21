@@ -1,3 +1,19 @@
+# Mac system files
+.DS_Store
+
+# Python temporary files
 __pycache__/
 *.pyc
+tempCodeRunnerFile.py
+
+# Environment files
 .env
+.venv/
+venv/
+
+# Generated ledger data and archives
+*.jsonl
+*.zip
+
+# Editor backup files
+*.save
